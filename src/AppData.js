@@ -1,4 +1,4 @@
-export const counters = [
+export const countersInitialArr = [
     {
         id: 0,
         value: 0

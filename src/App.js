@@ -1,88 +1,66 @@
 import React, {useState} from "react";
-import {counters} from "./AppData.js";
+import {countersInitialArr} from "./AppData.js";
 import './App.css';
 //import Counter from "./Counter";
-
-/*
-const counters = [
-    {
-        id: 0,
-        value: 0
-    },
-    {
-        id: 1,
-        value: 1
-    }
-];
-*/
 
 const calcTotal = (objArr) => {
     return objArr.reduce((acc, currEl) => acc + currEl.value, 0);
 }
 
 function App() {
+    const [totalCount, setTotalCount] = useState(calcTotal(countersInitialArr));
+    const [countersDynamicState, setCountersDynamicState] = useState(countersInitialArr);
+    const [count1, setCount1] = useState(countersInitialArr[0].value);
+    const [count2, setCount2] = useState(countersInitialArr[1].value);
 
+    function updateCountersArrStateOnValueChange(counterObj, countersArrCurrState) {
 
-    const [totalCount, setTotalCount] = useState(calcTotal(counters));
-    const [count1, setCount1] = useState(counters[0].value);
-    const [count2, setCount2] = useState(counters[1].value);
-
-    function updateCountersArrOnValueChange(counterObj) {
-        console.log('counterObj from updateCounterValueOnChange', counterObj);
-
-        const updatedCountersArr = [];
-        for (let i = 0; i < counters.length; i++) {
-            if (counters[i].id === counterObj.id) {
-                console.log('got into if');
-                console.log('counters[i].id', counters[i].id);
-                console.log('counterObj.id', counterObj.id);
-                console.log('counterObj.value', counterObj.value);
-                console.log('equal', counters[i].id === counterObj.id);
+        /**
+         * update current counters array that is stored in state
+         * with a changed value of an updated counter
+         */
+        /*const updatedCountersArr = [];
+        for (let i = 0; i < countersArrCurrState.length; i++) {
+            if (countersArrCurrState[i].id === counterObj.id) {
                 updatedCountersArr.push({
-                    id: counters[i].id,
+                    id: countersArrCurrState[i].id,
                     value: counterObj.value
 
                 })
-                console.log('updatedCountersArr in if', updatedCountersArr);
-            } else updatedCountersArr.push(counters[i]);
+            } else updatedCountersArr.push(countersArrCurrState[i]);
+        }*/
+        const updatedCountersArr = countersArrCurrState.map(el =>
+            el.id === counterObj.id
+                ? {
+                    id: el.id,
+                    value: counterObj.value
+                }
+                : el
+        );
 
-
-        }
-
-        //console.log('old counters', counters);
-        //console.log('new counters', updatedCountersArr);
-        //console.log('updatedCountersArr', updatedCountersArr);
-
+        /**
+         * Set new total in state
+         * from value sum calculations of an updated above counters array
+         */
         setTotalCount(calcTotal(updatedCountersArr));
-        //counters.map((el.id === counterObj.id) => updatedCountersArr.push(el));
 
-        // const updatedCounters = (counterObj) => {
-            //[...counters,
-            //counters.map((el => {
-            //if (el.id === counterObj.id) {
-            // el.value = counterObj.value
-            //}
-            //}))];
-            //setTotalCount(777);
-       // }
-
-        //setTotalCount(777);
-        //setTotalCount(calcTotal(updatedCounters));
+        /**
+         * Store updated counters array in state
+         */
+        setCountersDynamicState(updatedCountersArr);
     }
-
 
 
     const countChangePlusHandler = (counterObj, countState, setCountSetter) => {
         const newCountState = ++countState;
         setCountSetter(newCountState);
         console.log('newCountState local counter', newCountState);
-        updateCountersArrOnValueChange({id: counterObj.id, value: newCountState});
+        updateCountersArrStateOnValueChange({id: counterObj.id, value: newCountState}, countersDynamicState);
     }
     const countChangeMinusHandler = (counterObj, countState, setCountSetter) => {
         const newCountState = --countState;
         setCountSetter(newCountState);
-        console.log('newCountState local counter', newCountState);
-        updateCountersArrOnValueChange({id: counterObj.id, value: newCountState});
+        updateCountersArrStateOnValueChange({id: counterObj.id, value: newCountState}, countersDynamicState);
     }
 
     return (
@@ -93,16 +71,16 @@ function App() {
             <hr/>
 
             <div>
-                <button onClick={() => countChangeMinusHandler(counters[0], count1, setCount1)}>-</button>
+                <button onClick={() => countChangeMinusHandler(countersInitialArr[0], count1, setCount1)}>-</button>
                 {count1}
-                <button onClick={()=> countChangePlusHandler(counters[0], count1, setCount1)}>+</button>
+                <button onClick={() => countChangePlusHandler(countersInitialArr[0], count1, setCount1)}>+</button>
             </div>
             <hr/>
 
             <div>
-                <button onClick={()=> countChangeMinusHandler(counters[1], count2, setCount2)}>-</button>
+                <button onClick={() => countChangeMinusHandler(countersInitialArr[1], count2, setCount2)}>-</button>
                 {count2}
-                <button onClick={() => countChangePlusHandler(counters[1], count2, setCount2)}>+</button>
+                <button onClick={() => countChangePlusHandler(countersInitialArr[1], count2, setCount2)}>+</button>
             </div>
 
             {/*
