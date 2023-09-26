@@ -1,8 +1,5 @@
 import React, {useState} from "react";
 
-import Header from "./Header";
-
-
 function Counter(props) {
     //console.log('counter props', props);
     //console.log('props.counter', props.counter);

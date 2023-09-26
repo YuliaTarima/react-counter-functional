@@ -1,7 +1,9 @@
 import React, {useState} from "react";
+import {counters} from "./AppData.js";
 import './App.css';
 //import Counter from "./Counter";
 
+/*
 const counters = [
     {
         id: 0,
@@ -12,6 +14,7 @@ const counters = [
         value: 1
     }
 ];
+*/
 
 const calcTotal = (objArr) => {
     return objArr.reduce((acc, currEl) => acc + currEl.value, 0);
